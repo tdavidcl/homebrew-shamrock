@@ -30,7 +30,7 @@ jobs:
 
       - run: brew test-bot --only-tap-syntax
 
-      - run: brew test-bot --only-formulae -v --root-url='https://ghcr.io/v2/tdavidcl/adaptivecpp'
+      - run: brew test-bot --only-formulae -v --root-url='https://ghcr.io/v2/tdavidcl/shamrock'
         if: github.event_name == 'pull_request'
 
       - name: Upload bottles as artifact
