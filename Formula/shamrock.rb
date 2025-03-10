@@ -1,7 +1,7 @@
 class Shamrock < Formula
   desc "Astrophysical hydrodynamics using SYLC"
   homepage "https://github.com/Shamrock-code/Shamrock"
-  url "https://github.com/Shamrock-code/Shamrock/archive/refs/tags/v2024.10.0.tar.gz"
+  url "https://github.com/Shamrock-code/Shamrock/releases/download/v2024.10.0/shamrock-2024.10.0.tar"
   sha256 "dd36754d35b4e30756781b298fc57402bf48b966266924e8e6db9da86b74be56"
   license "BSD-2-Clause"
 
@@ -26,7 +26,7 @@ class Shamrock < Formula
         "-DACPP_PATH=#{adaptivecpp_root}",
         "-DCMAKE_BUILD_TYPE=Release",
         "-DBUILD_TEST=Yes"
-        
+
     system "make", "install"
 
   end
