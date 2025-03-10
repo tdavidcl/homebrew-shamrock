@@ -2,7 +2,7 @@ class Shamrock < Formula
   desc "Astrophysical hydrodynamics using SYLC"
   homepage "https://github.com/Shamrock-code/Shamrock"
   url "https://github.com/Shamrock-code/Shamrock/releases/download/v2024.10.0/shamrock-2024.10.0.tar"
-  sha256 "dd36754d35b4e30756781b298fc57402bf48b966266924e8e6db9da86b74be56"
+  sha256 "08c29793374e1aef4340f3060a55850bb01da56283c197017efcf7cdc36ab597"
   license "BSD-2-Clause"
 
   depends_on "cmake" => :build
