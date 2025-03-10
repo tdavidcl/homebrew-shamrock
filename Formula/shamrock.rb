@@ -14,21 +14,21 @@ class Shamrock < Formula
 
   def install
     libomp_root = Formula["libomp"].opt_prefix
+    adaptivecpp_root = Formula["adaptivecpp"].opt_prefix
 
     puts "libomp root: #{libomp_root}"
 
-    system "cmake", ".", *std_cmake_args, "-DOpenMP_ROOT=#{libomp_root}"
+    system "cmake", ".", *std_cmake_args,
+        "-DSHAMROCK_ENABLE_BACKEND=SYCL",
+        "-DSYCL_IMPLEMENTATION=ACPPDirect",
+        "-DCMAKE_CXX_COMPILER=acpp",
+        "-DCMAKE_CXX_FLAGS=\"-I#{libomp_root}/include\"",
+        "-DACPP_PATH=#{adaptivecpp_root}",
+        "-DCMAKE_BUILD_TYPE=Release",
+        "-DBUILD_TEST=Yes"
+        
     system "make", "install"
 
-    # Avoid references to Homebrew shims directory
-    shim_references = [prefix/"etc/AdaptiveCpp/acpp-core.json"]
-    inreplace shim_references, Superenv.shims_path/ENV.cxx, ENV.cxx
-
-    # we add -I#{libomp_root}/include to default-omp-cxx-flags
-    inreplace prefix/"etc/AdaptiveCpp/acpp-core.json",
-      "\"default-omp-cxx-flags\" : \"", "\"default-omp-cxx-flags\" : \"-I#{libomp_root}/include "
-
-    system "cat", prefix/"etc/AdaptiveCpp/acpp-core.json"
   end
 
   test do
