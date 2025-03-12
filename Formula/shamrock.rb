@@ -10,6 +10,7 @@ class Shamrock < Formula
   depends_on "libomp"
   depends_on "llvm"
   depends_on "python"
+  depends_on "fmt"
   depends_on "tdavidcl/adaptivecpp/adaptivecpp"
 
   def install
@@ -25,7 +26,8 @@ class Shamrock < Formula
         "-DCMAKE_CXX_FLAGS=\"-I#{libomp_root}/include\"",
         "-DACPP_PATH=#{adaptivecpp_root}",
         "-DCMAKE_BUILD_TYPE=Release",
-        "-DBUILD_TEST=Yes"
+        "-DBUILD_TEST=Yes",
+        "-DUSE_SYSTEM_FMTLIB=Yes"
 
     system "make", "install"
 
