@@ -6,10 +6,7 @@ class Shamrock < Formula
   license "BSD-2-Clause"
 
   depends_on "cmake" => :build
-  depends_on "boost"
-  depends_on "libomp"
   depends_on "open-mpi"
-  depends_on "llvm"
   depends_on "python"
   depends_on "fmt"
   depends_on "tdavidcl/adaptivecpp/adaptivecpp"
