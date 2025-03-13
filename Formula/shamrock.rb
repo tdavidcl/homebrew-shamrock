@@ -6,9 +6,9 @@ class Shamrock < Formula
   license "BSD-2-Clause"
 
   depends_on "cmake" => :build
+  depends_on "fmt"
   depends_on "open-mpi"
   depends_on "python"
-  depends_on "fmt"
   depends_on "tdavidcl/adaptivecpp/adaptivecpp"
 
   def install
@@ -28,7 +28,6 @@ class Shamrock < Formula
         "-DUSE_SYSTEM_FMTLIB=Yes"
 
     system "make", "install"
-
   end
 
   test do
