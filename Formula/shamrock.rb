@@ -15,8 +15,6 @@ class Shamrock < Formula
     libomp_root = Formula["libomp"].opt_prefix
     adaptivecpp_root = Formula["adaptivecpp"].opt_prefix
 
-    puts "libomp root: #{libomp_root}"
-
     system "cmake", ".", *std_cmake_args,
         "-DSHAMROCK_ENABLE_BACKEND=SYCL",
         "-DSYCL_IMPLEMENTATION=ACPPDirect",
