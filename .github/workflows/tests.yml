@@ -33,7 +33,7 @@ jobs:
       - run: brew test-bot --only-formulae -v --root-url='https://ghcr.io/v2/tdavidcl/shamrock'
         if: github.event_name == 'pull_request'
 
-      - run: brew test-bot --testing-formulae shamrock adaptivecpp
+      - run: brew install shamrock
         if: github.event_name == 'pull_request'
 
       - name: Upload bottles as artifact
