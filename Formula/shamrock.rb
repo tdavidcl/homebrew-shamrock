@@ -9,7 +9,7 @@ class Shamrock < Formula
   depends_on "fmt"
   depends_on "open-mpi"
   depends_on "python"
-  depends_on "tdavidcl/adaptivecpp/adaptivecpp"
+  depends_on "adaptivecpp"
 
   def install
     libomp_root = Formula["libomp"].opt_prefix
@@ -21,7 +21,6 @@ class Shamrock < Formula
         "-DSHAMROCK_ENABLE_BACKEND=SYCL",
         "-DSYCL_IMPLEMENTATION=ACPPDirect",
         "-DCMAKE_CXX_COMPILER=acpp",
-        "-DCMAKE_CXX_FLAGS=\"-I#{libomp_root}/include\"",
         "-DACPP_PATH=#{adaptivecpp_root}",
         "-DCMAKE_BUILD_TYPE=Release",
         "-DBUILD_TEST=Yes",
