@@ -32,6 +32,6 @@ class Shamrock < Formula
   test do
     system "#{bin}/shamrock", "--help"
     system "#{bin}/shamrock", "--smi"
-    system "#{bin}/mpirun", "-n","1","shamrock","--smi","--sycl-cfg","auto:OpenMP"
+    system "#{bin}/mpirun", "-n", "1", "shamrock", "--smi", "--sycl-cfg", "auto:OpenMP"
   end
 end
