@@ -9,7 +9,6 @@ class Shamrock < Formula
   depends_on "adaptivecpp"
   depends_on "fmt"
   depends_on "open-mpi"
-  
   uses_from_macos "python"
 
   def install
