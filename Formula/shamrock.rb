@@ -6,10 +6,10 @@ class Shamrock < Formula
   license "BSD-2-Clause"
 
   depends_on "cmake" => :build
+  depends_on "adaptivecpp"
   depends_on "fmt"
   depends_on "open-mpi"
-  depends_on "python"
-  depends_on "adaptivecpp"
+  uses_from_macos "python"
 
   def install
     libomp_root = Formula["libomp"].opt_prefix
@@ -30,15 +30,8 @@ class Shamrock < Formula
   end
 
   test do
-    system "#{bin}/acpp", "--version"
-
-    (testpath/"hellosycl.cpp").write <<~C
-      #include <sycl/sycl.hpp>
-      int main(){
-          sycl::queue q{};
-      }
-    C
-    system bin/"acpp", "hellosycl.cpp", "-o", "hello"
-    system "./hello"
+    system "#{bin}/shamrock", "--help"
+    system "#{bin}/shamrock", "--smi"
+    system "mpirun", "-n", "1", "#{bin}/shamrock", "--smi", "--sycl-cfg", "auto:OpenMP"
   end
 end
