@@ -8,8 +8,8 @@ class Shamrock < Formula
   depends_on "cmake" => :build
   depends_on "fmt"
   depends_on "open-mpi"
-  depends_on "python"
   depends_on "adaptivecpp"
+  depends_on "python"
 
   def install
     libomp_root = Formula["libomp"].opt_prefix
