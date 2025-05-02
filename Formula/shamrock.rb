@@ -39,5 +39,6 @@ class Shamrock < Formula
     system "#{bin}/shamrock", "--help"
     system "#{bin}/shamrock", "--smi"
     system "mpirun", "-n", "1", "#{bin}/shamrock", "--smi", "--sycl-cfg", "auto:OpenMP"
+    system "#{python}", "-c", "import shamrock;shamrock.change_loglevel(125);shamrock.sys.init('0:0')"
   end
 end
