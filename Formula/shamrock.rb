@@ -26,7 +26,8 @@ class Shamrock < Formula
         "-DBUILD_TEST=Yes",
         "-DUSE_SYSTEM_FMTLIB=Yes"
 
-    system "make", "install"
+    system "cmake", "--build", "."
+    system "cmake", "--install", "."
   end
 
   test do
