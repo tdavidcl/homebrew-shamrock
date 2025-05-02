@@ -14,7 +14,7 @@ class Shamrock < Formula
   def python
     which("python3.13")
   end
-  
+
   def install
     libomp_root = Formula["libomp"].opt_prefix
     adaptivecpp_root = Formula["adaptivecpp"].opt_prefix
