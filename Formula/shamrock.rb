@@ -9,8 +9,12 @@ class Shamrock < Formula
   depends_on "adaptivecpp"
   depends_on "fmt"
   depends_on "open-mpi"
-  uses_from_macos "python"
+  depends_on "python@3.13"
 
+  def python
+    which("python3.13")
+  end
+  
   def install
     libomp_root = Formula["libomp"].opt_prefix
     adaptivecpp_root = Formula["adaptivecpp"].opt_prefix
@@ -19,6 +23,7 @@ class Shamrock < Formula
 
     system "cmake", ".", *std_cmake_args,
         "-DSHAMROCK_ENABLE_BACKEND=SYCL",
+        "-DPYTHON_EXECUTABLE=#{python}",
         "-DSYCL_IMPLEMENTATION=ACPPDirect",
         "-DCMAKE_CXX_COMPILER=acpp",
         "-DACPP_PATH=#{adaptivecpp_root}",
