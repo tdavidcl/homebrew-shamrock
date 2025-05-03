@@ -36,7 +36,9 @@ class Shamrock < Formula
     system "cmake", "--build", "."
     system "cmake", "--install", "."
 
-    system "cp", "-v", "*.so", "#{site_packages(python)/shamrock}"
+    py_package = "#{site_packages(python)/shamrock}"
+
+    cp, "-v", "*.so", py_package
   end
 
   test do
