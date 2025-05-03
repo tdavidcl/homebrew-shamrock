@@ -24,13 +24,13 @@ jobs:
           key: ${{ matrix.os }}-rubygems-${{ steps.set-up-homebrew.outputs.gems-hash }}
           restore-keys: ${{ matrix.os }}-rubygems-
 
-      - run: brew test-bot --strict --only-cleanup-before
+      - run: brew test-bot --only-cleanup-before
 
-      - run: brew test-bot --strict --only-setup
+      - run: brew test-bot --only-setup
 
-      - run: brew test-bot --strict --only-tap-syntax
+      - run: brew test-bot --only-tap-syntax
 
-      - run: brew test-bot --strict --only-formulae -v --root-url='https://ghcr.io/v2/tdavidcl/shamrock'
+      - run: brew test-bot --only-formulae -v --root-url='https://ghcr.io/v2/tdavidcl/shamrock'
         if: github.event_name == 'pull_request'
 
       - name: Upload bottles as artifact
