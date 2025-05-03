@@ -37,6 +37,7 @@ class Shamrock < Formula
 
     py_package = site_packages(python).join("shamrock")
 
+    mkdir_p py_package
     cp_r Dir["*.so"], py_package
   end
 
