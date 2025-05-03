@@ -49,6 +49,13 @@ class Shamrock < Formula
     system "#{bin}/shamrock", "--help"
     system "#{bin}/shamrock", "--smi"
     system "mpirun", "-n", "1", "#{bin}/shamrock", "--smi", "--sycl-cfg", "auto:OpenMP"
-    system python.to_s, "-c", "import shamrock;shamrock.change_loglevel(125);shamrock.sys.init('0:0')"
+    test_py = "test.py"
+    test_py.write <<~EOS
+      import shamrock
+      shamrock.change_loglevel(125)
+      shamrock.sys.init('0:0')
+      shamrock.sys.close()
+    EOS
+    system python.to_s, test_py
   end
 end
