@@ -35,9 +35,9 @@ class Shamrock < Formula
     system "cmake", "--build", "."
     system "cmake", "--install", "."
 
-    py_package = {site_packages(python)/shamrock}.to_s
+    py_package = site_packages(python).join("shamrock").to_s
 
-    cp "*.so", py_package
+    cp, "*.so", py_package
   end
 
   test do
