@@ -39,6 +39,11 @@ class Shamrock < Formula
 
     mkdir_p py_package
     cp_r Dir["*.so"], py_package
+
+    (py_package/"__init__.py").write <<~EOS
+      from .shamrock import *
+    EOS
+
   end
 
   test do
