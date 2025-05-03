@@ -21,7 +21,6 @@ class Shamrock < Formula
   end
 
   def install
-
     args = %W[
       -DSHAMROCK_ENABLE_BACKEND=SYCL
       -DPYTHON_EXECUTABLE=#{python}
