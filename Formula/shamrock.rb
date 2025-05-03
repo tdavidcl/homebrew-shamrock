@@ -21,15 +21,14 @@ class Shamrock < Formula
   end
 
   def install
-    adaptivecpp_root = Formula["adaptivecpp"].opt_prefix
 
     args = %W[
-        -DSHAMROCK_ENABLE_BACKEND=SYCL
-        -DPYTHON_EXECUTABLE=#{python}
-        -DSYCL_IMPLEMENTATION=ACPPDirect
-        -DCMAKE_CXX_COMPILER=acpp
-        -DACPP_PATH=#{Formula["adaptivecpp"].opt_prefix}
-        -DUSE_SYSTEM_FMTLIB=Yes
+      -DSHAMROCK_ENABLE_BACKEND=SYCL
+      -DPYTHON_EXECUTABLE=#{python}
+      -DSYCL_IMPLEMENTATION=ACPPDirect
+      -DCMAKE_CXX_COMPILER=acpp
+      -DACPP_PATH=#{Formula["adaptivecpp"].opt_prefix}
+      -DUSE_SYSTEM_FMTLIB=Yes
     ]
 
     system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
