@@ -20,7 +20,6 @@ class Shamrock < Formula
   end
 
   def install
-    libomp_root = Formula["libomp"].opt_prefix
     adaptivecpp_root = Formula["adaptivecpp"].opt_prefix
 
     system "cmake", ".", *std_cmake_args,
