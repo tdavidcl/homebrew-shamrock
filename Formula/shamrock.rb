@@ -20,7 +20,7 @@ class Shamrock < Formula
     adaptivecpp_root = Formula["adaptivecpp"].opt_prefix
 
     site_packages = prefix/Language::Python.site_packages(python3)
-    rpaths = [rpath(source: site_packages/"shamrock"),rpath(source: ".")]
+    rpaths = [rpath(source: site_packages/"shamrock"), rpath(source: ".")]
 
     puts "libomp root: #{libomp_root}"
 
