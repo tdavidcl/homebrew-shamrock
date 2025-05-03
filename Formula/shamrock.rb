@@ -8,9 +8,14 @@ class Shamrock < Formula
 
   depends_on "cmake" => :build
   depends_on "adaptivecpp"
+  depends_on "boost" # indirect by adaptivecpp
   depends_on "fmt"
   depends_on "open-mpi"
   depends_on "python@3.13"
+
+  on_macos do
+    depends_on "libomp" # indirect by adaptivecpp
+  end
 
   def python
     which("python3.13")
