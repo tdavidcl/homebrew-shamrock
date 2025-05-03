@@ -49,7 +49,7 @@ class Shamrock < Formula
     system "#{bin}/shamrock", "--help"
     system "#{bin}/shamrock", "--smi"
     system "mpirun", "-n", "1", "#{bin}/shamrock", "--smi", "--sycl-cfg", "auto:OpenMP"
-    test_py = "test.py"
+    test_py = testpath/"test.py"
     test_py.write <<~EOS
       import shamrock
       shamrock.change_loglevel(125)
