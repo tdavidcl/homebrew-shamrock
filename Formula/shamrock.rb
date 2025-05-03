@@ -47,9 +47,9 @@ class Shamrock < Formula
   end
 
   test do
-    system "#{bin}/shamrock", "--help"
-    system "#{bin}/shamrock", "--smi"
-    system "mpirun", "-n", "1", "#{bin}/shamrock", "--smi", "--sycl-cfg", "auto:OpenMP"
+    system bin/"shamrock", "--help"
+    system bin/"shamrock", "--smi"
+    system "mpirun", "-n", "1", bin/"shamrock", "--smi", "--sycl-cfg", "auto:OpenMP"
     test_py = testpath/"test.py"
     test_py.write <<~EOS
       import shamrock
