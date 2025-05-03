@@ -43,7 +43,6 @@ class Shamrock < Formula
     (py_package/"__init__.py").write <<~EOS
       from .shamrock import *
     EOS
-
   end
 
   test do
