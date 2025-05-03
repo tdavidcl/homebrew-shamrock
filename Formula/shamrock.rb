@@ -15,19 +15,17 @@ class Shamrock < Formula
     which("python3.13")
   end
 
+  def site_packages(python)
+    prefix/Language::Python.site_packages(python)
+  end
+
   def install
     libomp_root = Formula["libomp"].opt_prefix
     adaptivecpp_root = Formula["adaptivecpp"].opt_prefix
 
-    site_packages = prefix/Language::Python.site_packages(python)
-    rpaths = [rpath(source: site_packages/"shamrock"), "."]
-
-    puts "libomp root: #{libomp_root}"
-
     system "cmake", ".", *std_cmake_args,
         "-DSHAMROCK_ENABLE_BACKEND=SYCL",
         "-DPYTHON_EXECUTABLE=#{python}",
-        "-DCMAKE_INSTALL_RPATH=#{rpaths.join(";")}",
         "-DSYCL_IMPLEMENTATION=ACPPDirect",
         "-DCMAKE_CXX_COMPILER=acpp",
         "-DACPP_PATH=#{adaptivecpp_root}",
@@ -37,6 +35,8 @@ class Shamrock < Formula
 
     system "cmake", "--build", "."
     system "cmake", "--install", "."
+
+    system "cp", "-v", "*.so", "#{site_packages(python)/shamrock}"
   end
 
   test do
