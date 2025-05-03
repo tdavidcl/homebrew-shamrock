@@ -37,7 +37,7 @@ class Shamrock < Formula
 
     py_package = "#{site_packages(python)/shamrock}"
 
-    cp, "-v", "*.so", py_package
+    cp "*.so", py_package
   end
 
   test do
