@@ -38,25 +38,15 @@ class Shamrock < Formula
       -DSYCL_IMPLEMENTATION=ACPPDirect
       -DCMAKE_CXX_COMPILER=acpp
       -DACPP_PATH=#{Formula["adaptivecpp"].opt_prefix}
-      -DCMAKE_INSTALL_PYTHONDIR=#{prefix/Language::Python.site_packages(python)}
+      -DCMAKE_INSTALL_PYTHONDIR=#{site_packages(python).join("shamrock")}
       -DSHAMROCK_EXTERNAL_FMTLIB=ON
       -DSHAMROCK_EXTERNAL_JSON=ON
       -DSHAMROCK_EXTERNAL_PYBIND11=ON
     ]
 
-    system "ls", "-la"
     system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
-
-    py_package = site_packages(python).join("shamrock")
-
-    mkdir_p py_package
-    cp_r Dir["build/*.so"], py_package
-
-    (py_package/"__init__.py").write <<~PY
-      from .shamrock import *
-    PY
   end
 
   test do
