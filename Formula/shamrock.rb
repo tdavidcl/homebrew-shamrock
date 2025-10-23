@@ -1,8 +1,9 @@
 class Shamrock < Formula
   desc "Astrophysical hydrodynamics using SYCL"
   homepage "https://github.com/Shamrock-code/Shamrock"
-  url "file:///Users/davidclt/Downloads/Shamrock.tar"
+  url "file:///Users/davidclt/Downloads/Shamrock.tar", using: :nounzip
   sha256 "59d5652467fd9453a65ae7b48e0c9b7d4162edc8df92e09d08dcc5275407a897"
+  version "2025.05.0"
   license "CECILL-2.1"
   revision 1
   head "https://github.com/Shamrock-code/Shamrock.git", branch: "main"
