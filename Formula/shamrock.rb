@@ -4,21 +4,26 @@ class Shamrock < Formula
   url "https://github.com/Shamrock-code/Shamrock/releases/download/v2025.05.0/shamrock-2025.05.0.tar"
   sha256 "59d5652467fd9453a65ae7b48e0c9b7d4162edc8df92e09d08dcc5275407a897"
   license "CECILL-2.1"
+  revision 1
   head "https://github.com/Shamrock-code/Shamrock.git", branch: "main"
 
+  no_autobump! because: :requires_manual_review
+
   depends_on "cmake" => :build
+  depends_on "fmt" => :build
+  depends_on "nlohmann-json" => :build
+  depends_on "pybind11" => :build
   depends_on "adaptivecpp"
-  depends_on "boost" # indirect by adaptivecpp
-  depends_on "fmt"
+  depends_on "boost"
   depends_on "open-mpi"
-  depends_on "python@3.13"
+  depends_on "python@3.14"
 
   on_macos do
-    depends_on "libomp" # indirect by adaptivecpp
+    depends_on "libomp"
   end
 
   def python
-    which("python3.13")
+    which("python3.14")
   end
 
   def site_packages(python)
@@ -26,13 +31,21 @@ class Shamrock < Formula
   end
 
   def install
+    rm_r(%w[
+      external/fmt
+      external/nlohmann_json
+      external/pybind11
+    ])
+
     args = %W[
       -DSHAMROCK_ENABLE_BACKEND=SYCL
       -DPYTHON_EXECUTABLE=#{python}
       -DSYCL_IMPLEMENTATION=ACPPDirect
       -DCMAKE_CXX_COMPILER=acpp
       -DACPP_PATH=#{Formula["adaptivecpp"].opt_prefix}
-      -DUSE_SYSTEM_FMTLIB=Yes
+      -DSHAMROCK_EXTERNAL_FMTLIB=ON
+      -DSHAMROCK_EXTERNAL_JSON=ON
+      -DSHAMROCK_EXTERNAL_PYBIND11=ON
     ]
 
     system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
@@ -59,6 +72,6 @@ class Shamrock < Formula
       shamrock.sys.init('0:0')
       shamrock.sys.close()
     PY
-    system "python3.13", testpath/"test.py"
+    system python, testpath/"test.py"
   end
 end
