@@ -32,12 +32,6 @@ class Shamrock < Formula
   end
 
   def install
-    rm_r(%w[
-      external/fmt
-      external/nlohmann_json
-      external/pybind11
-    ])
-
     args = %W[
       -DSHAMROCK_ENABLE_BACKEND=SYCL
       -DPYTHON_EXECUTABLE=#{python}
