@@ -38,11 +38,13 @@ class Shamrock < Formula
       -DSYCL_IMPLEMENTATION=ACPPDirect
       -DCMAKE_CXX_COMPILER=acpp
       -DACPP_PATH=#{Formula["adaptivecpp"].opt_prefix}
+      -DCMAKE_INSTALL_PYTHONDIR=#{prefix/Language::Python.site_packages(python3)}
       -DSHAMROCK_EXTERNAL_FMTLIB=ON
       -DSHAMROCK_EXTERNAL_JSON=ON
       -DSHAMROCK_EXTERNAL_PYBIND11=ON
     ]
 
+    system "ls", "-la"
     system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
