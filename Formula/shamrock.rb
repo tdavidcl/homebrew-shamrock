@@ -61,7 +61,7 @@ class Shamrock < Formula
       # To test that importing nested modules works
       from shamrock.math import *
     PY
-    
+
     # Basic cases
     system bin/"shamrock", "--help"
     system bin/"shamrock", "--smi"
@@ -72,3 +72,4 @@ class Shamrock < Formula
     system bin/"shamrock", "--smi", "--sycl-cfg", "0:0", "--rscript", "test.py"
   end
 end
+
