@@ -38,7 +38,7 @@ class Shamrock < Formula
     args = %W[
       -DSHAMROCK_ENABLE_BACKEND=SYCL
       -DPYTHON_EXECUTABLE=#{python}
-      -DCMAKE_INSTALL_PYTHONDIR=#{site_packages(python).join("shamrock")}
+      -DCMAKE_INSTALL_PYTHONDIR=#{site_packages(python)}
       -DSYCL_IMPLEMENTATION=ACPPDirect
       -DCMAKE_CXX_COMPILER=acpp
       -DACPP_PATH=#{Formula["adaptivecpp"].opt_prefix}
