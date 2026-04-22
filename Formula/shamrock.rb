@@ -1,43 +1,74 @@
 class Shamrock < Formula
-  desc "Astrophysical hydrodynamics using SYLC"
+  desc "Astrophysical hydrodynamics using SYCL"
   homepage "https://github.com/Shamrock-code/Shamrock"
-  url "https://github.com/Shamrock-code/Shamrock/releases/download/v2025.03.1/shamrock-2025.03.1.tar"
-  sha256 "df5b4af63944f5e97332baaafe6b0c8db11300c1d2f9a7676593f80c8ee92d7f"
-  license "BSD-2-Clause"
+  url "https://github.com/Shamrock-code/Shamrock/releases/download/v2025.10.0/shamrock-2025.10.0.tar"
+  sha256 "72683352d862d7b3d39568151a17ea78633bd4976a40eacb77098d3ef0ca3c55"
+  license "CECILL-2.1"
+  revision 1
+  head "https://github.com/Shamrock-code/Shamrock.git", branch: "main"
 
   depends_on "cmake" => :build
-  depends_on "fmt"
+  depends_on "fmt" => :build
+  depends_on "nlohmann-json" => :build
+  depends_on "pybind11" => :build
+  depends_on "adaptivecpp"
+  depends_on "boost"
   depends_on "open-mpi"
-  depends_on "python"
-  depends_on "tdavidcl/adaptivecpp/adaptivecpp"
+  depends_on "python@3.14"
+
+  on_macos do
+    depends_on "libomp"
+  end
+
+  def python
+    which("python3.14")
+  end
+
+  def site_packages(python)
+    prefix/Language::Python.site_packages(python)
+  end
 
   def install
-    libomp_root = Formula["libomp"].opt_prefix
-    adaptivecpp_root = Formula["adaptivecpp"].opt_prefix
+    rm_r(%w[
+      external/fmt
+      external/nlohmann_json
+      external/pybind11
+    ])
 
-    system "cmake", ".", *std_cmake_args,
-        "-DSHAMROCK_ENABLE_BACKEND=SYCL",
-        "-DSYCL_IMPLEMENTATION=ACPPDirect",
-        "-DCMAKE_CXX_COMPILER=acpp",
-        "-DCMAKE_CXX_FLAGS=\"-I#{libomp_root}/include\"",
-        "-DACPP_PATH=#{adaptivecpp_root}",
-        "-DCMAKE_BUILD_TYPE=Release",
-        "-DBUILD_TEST=Yes",
-        "-DUSE_SYSTEM_FMTLIB=Yes"
+    args = %W[
+      -DSHAMROCK_ENABLE_BACKEND=SYCL
+      -DPYTHON_EXECUTABLE=#{python}
+      -DCMAKE_INSTALL_PYTHONDIR=#{site_packages(python).join("shamrock")}
+      -DSYCL_IMPLEMENTATION=ACPPDirect
+      -DCMAKE_CXX_COMPILER=acpp
+      -DACPP_PATH=#{Formula["adaptivecpp"].opt_prefix}
+      -DSHAMROCK_EXTERNAL_FMTLIB=ON
+      -DSHAMROCK_EXTERNAL_JSON=ON
+      -DSHAMROCK_EXTERNAL_PYBIND11=ON
+    ]
 
-    system "make", "install"
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do
-    system "#{bin}/acpp", "--version"
+    (testpath/"test.py").write <<~PY
+      import shamrock
+      shamrock.change_loglevel(125)
+      if not shamrock.sys.is_initialized():
+        shamrock.sys.init('0:0')
+      # To test that importing nested modules works
+      from shamrock.math import *
+    PY
+    
+    # Basic cases
+    system bin/"shamrock", "--help"
+    system bin/"shamrock", "--smi"
+    system "mpirun", "-n", "1", bin/"shamrock", "--smi"
 
-    (testpath/"hellosycl.cpp").write <<~C
-      #include <sycl/sycl.hpp>
-      int main(){
-          sycl::queue q{};
-      }
-    C
-    system bin/"acpp", "hellosycl.cpp", "-o", "hello"
-    system "./hello"
+    # Will test that kernels can run too
+    system python, "test.py"
+    system bin/"shamrock", "--smi", "--sycl-cfg", "0:0", "--rscript", "test.py"
   end
 end
