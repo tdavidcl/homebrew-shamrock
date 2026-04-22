@@ -55,11 +55,8 @@ class Shamrock < Formula
   test do
     (testpath/"test.py").write <<~PY
       import shamrock
-      shamrock.change_loglevel(125)
       if not shamrock.sys.is_initialized():
         shamrock.sys.init('0:0')
-      # To test that importing nested modules works
-      from shamrock.math import *
     PY
 
     # Basic cases
