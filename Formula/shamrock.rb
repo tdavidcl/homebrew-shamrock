@@ -72,4 +72,3 @@ class Shamrock < Formula
     system bin/"shamrock", "--smi", "--sycl-cfg", "0:0", "--rscript", "test.py"
   end
 end
-
