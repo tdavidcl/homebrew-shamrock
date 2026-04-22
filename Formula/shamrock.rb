@@ -1,14 +1,11 @@
 class Shamrock < Formula
   desc "Astrophysical hydrodynamics using SYCL"
   homepage "https://github.com/Shamrock-code/Shamrock"
-  url "file:///Users/davidclt/Downloads/Shamrock.tar"
-  sha256 "0ca54e35f88f4b7e14c372933d0cea96b11fa43c0b9248291b823eb5989fa1f2"
-  version "2025.05.0"
+  url "https://github.com/Shamrock-code/Shamrock/releases/download/v2025.10.0/shamrock-2025.10.0.tar"
+  sha256 "72683352d862d7b3d39568151a17ea78633bd4976a40eacb77098d3ef0ca3c55"
   license "CECILL-2.1"
   revision 1
   head "https://github.com/Shamrock-code/Shamrock.git", branch: "main"
-
-  no_autobump! because: :requires_manual_review
 
   depends_on "cmake" => :build
   depends_on "fmt" => :build
@@ -32,13 +29,19 @@ class Shamrock < Formula
   end
 
   def install
+    rm_r(%w[
+      external/fmt
+      external/nlohmann_json
+      external/pybind11
+    ])
+
     args = %W[
       -DSHAMROCK_ENABLE_BACKEND=SYCL
       -DPYTHON_EXECUTABLE=#{python}
+      -DCMAKE_INSTALL_PYTHONDIR=#{site_packages(python).join("shamrock")}
       -DSYCL_IMPLEMENTATION=ACPPDirect
       -DCMAKE_CXX_COMPILER=acpp
       -DACPP_PATH=#{Formula["adaptivecpp"].opt_prefix}
-      -DCMAKE_INSTALL_PYTHONDIR=#{site_packages(python).join("shamrock")}
       -DSHAMROCK_EXTERNAL_FMTLIB=ON
       -DSHAMROCK_EXTERNAL_JSON=ON
       -DSHAMROCK_EXTERNAL_PYBIND11=ON
@@ -50,15 +53,22 @@ class Shamrock < Formula
   end
 
   test do
-    system bin/"shamrock", "--help"
-    system bin/"shamrock", "--smi"
-    system "mpirun", "-n", "1", bin/"shamrock", "--smi", "--sycl-cfg", "auto:OpenMP"
     (testpath/"test.py").write <<~PY
       import shamrock
       shamrock.change_loglevel(125)
-      shamrock.sys.init('0:0')
-      shamrock.sys.close()
+      if not shamrock.sys.is_initialized():
+        shamrock.sys.init('0:0')
+      # To test that importing nested modules works
+      from shamrock.math import *
     PY
-    system python, testpath/"test.py"
+    
+    # Basic cases
+    system bin/"shamrock", "--help"
+    system bin/"shamrock", "--smi"
+    system "mpirun", "-n", "1", bin/"shamrock", "--smi"
+
+    # Will test that kernels can run too
+    system python, "test.py"
+    system bin/"shamrock", "--smi", "--sycl-cfg", "0:0", "--rscript", "test.py"
   end
 end
